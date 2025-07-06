@@ -1,6 +1,6 @@
 --[[
     💫METEOR_HUB🌟
-    Version 6: Restored Emoji Logo
+    Version 6: Restored Emoji Log
     Dibuat oleh: rip_kompos
 ]]
 

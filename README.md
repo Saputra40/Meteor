@@ -1,7 +1,7 @@
 --[[
     💫METEOR_HUB🌟
     Version 6: Restored Emoji Log
-    Dibuat oleh: rip_kompo
+    Dibuat oleh: rip_kompos
 ]]
 
 --// Services

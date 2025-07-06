@@ -1,7 +1,8 @@
 --[[
 💫METEOR_HUB🌟
-Version 6: Restored Emoji Logo
+Version 7: Continuous Buy Feature
 Dibuat oleh: rip_kompos
+Modifikasi oleh: Gemini
 ]]
 
 --// Services
@@ -71,7 +72,7 @@ TitleLabel.Size = UDim2.new(1, -70, 1, 0)
 TitleLabel.Position = UDim2.new(0, 15, 0, 0)
 TitleLabel.BackgroundTransparency = 1
 TitleLabel.Font = Enum.Font.GothamBold
-TitleLabel.Text = "💫METEOR_HUB🌟 [v6]" -- [DIUBAH] Versi diperbarui
+TitleLabel.Text = "💫METEOR_HUB🌟 [v7]"
 TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TitleLabel.TextSize = 16
 TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -116,25 +117,24 @@ PagesContainer.Parent = MainFrame
 --// Page Creation Logic
 local pages = {}
 local function createPage(name)
-local page = Instance.new("ScrollingFrame")
-page.Name = name .. "Page"
-page.Size = UDim2.new(1, 0, 1, 0)
-page.BackgroundTransparency = 1
-page.BorderSizePixel = 0
-page.Visible = false
-page.Parent = PagesContainer
-page.CanvasSize = UDim2.new(0, 0, 0, 0)
-page.ScrollBarImageColor3 = Color3.fromRGB(150, 150, 150)
-page.ScrollBarThickness = 5
+    local page = Instance.new("ScrollingFrame")
+    page.Name = name .. "Page"
+    page.Size = UDim2.new(1, 0, 1, 0)
+    page.BackgroundTransparency = 1
+    page.BorderSizePixel = 0
+    page.Visible = false
+    page.Parent = PagesContainer
+    page.CanvasSize = UDim2.new(0, 0, 0, 0)
+    page.ScrollBarImageColor3 = Color3.fromRGB(150, 150, 150)
+    page.ScrollBarThickness = 5
 
-local layout = Instance.new("UIListLayout", page)  
-layout.Padding = UDim.new(0, 8)  
-layout.SortOrder = Enum.SortOrder.LayoutOrder  
-layout.HorizontalAlignment = Enum.HorizontalAlignment.Center  
+    local layout = Instance.new("UIListLayout", page)
+    layout.Padding = UDim.new(0, 8)
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 
-pages[name] = page  
-return page
-
+    pages[name] = page
+    return page
 end
 
 --// Create Pages
@@ -147,38 +147,37 @@ local uiSettingsPage = createPage("Pengaturan UI")
 
 --// Navigation Logic
 local function switchPage(name)
-for pageName, page in pairs(pages) do
-page.Visible = (pageName == name)
-end
-for _, button in ipairs(NavBar:GetChildren()) do
-if button:IsA("TextButton") then
-local targetColor = (button.Name == name) and Color3.fromRGB(80, 80, 255) or Color3.fromRGB(50, 50, 60)
-TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = targetColor}):Play()
-end
-end
+    for pageName, page in pairs(pages) do
+        page.Visible = (pageName == name)
+    end
+    for _, button in ipairs(NavBar:GetChildren()) do
+        if button:IsA("TextButton") then
+            local targetColor = (button.Name == name) and Color3.fromRGB(80, 80, 255) or Color3.fromRGB(50, 50, 60)
+            TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = targetColor}):Play()
+        end
+    end
 end
 
 --// Navigation Button Creation
 local function createNavButton(name, order)
-local button = Instance.new("TextButton")
-button.Name = name
-button.LayoutOrder = order
-button.Size = UDim2.new(1, -10, 0, 30)
-button.BackgroundColor3 = (name == "Home") and Color3.fromRGB(80, 80, 255) or Color3.fromRGB(50, 50, 60)
-button.Font = Enum.Font.Gotham
-button.Text = name
-button.TextColor3 = Color3.fromRGB(255, 255, 255)
-button.TextSize = 14
-button.Parent = NavBar
+    local button = Instance.new("TextButton")
+    button.Name = name
+    button.LayoutOrder = order
+    button.Size = UDim2.new(1, -10, 0, 30)
+    button.BackgroundColor3 = (name == "Home") and Color3.fromRGB(80, 80, 255) or Color3.fromRGB(50, 50, 60)
+    button.Font = Enum.Font.Gotham
+    button.Text = name
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.TextSize = 14
+    button.Parent = NavBar
 
-local corner = Instance.new("UICorner", button)  
-corner.CornerRadius = UDim.new(0, 6)  
+    local corner = Instance.new("UICorner", button)
+    corner.CornerRadius = UDim.new(0, 6)
 
-button.MouseButton1Click:Connect(function()  
-    switchPage(name)  
-end)  
-return button
-
+    button.MouseButton1Click:Connect(function()
+        switchPage(name)
+    end)
+    return button
 end
 
 createNavButton("Home", 0)
@@ -190,107 +189,105 @@ createNavButton("Pengaturan UI", 5)
 
 --// Function to dynamically update ScrollingFrame CanvasSize
 local function updateCanvasSize(page)
-task.wait()
-local layout = page:FindFirstChildOfClass("UIListLayout")
-if not layout then return end
+    task.wait()
+    local layout = page:FindFirstChildOfClass("UIListLayout")
+    if not layout then return end
 
-local absoluteContentSize = layout.AbsoluteContentSize  
-page.CanvasSize = UDim2.new(0, 0, 0, absoluteContentSize.Y + layout.Padding.Offset * 2)
-
+    local absoluteContentSize = layout.AbsoluteContentSize
+    page.CanvasSize = UDim2.new(0, 0, 0, absoluteContentSize.Y + layout.Padding.Offset * 2)
 end
 
 --// Element Creation Functions
 local function createLabel(parentPage, text)
-local label = Instance.new("TextLabel")
-label.Name = "InfoLabel"
-label.Size = UDim2.new(1, -10, 0, 25)
-label.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
-label.Font = Enum.Font.Gotham
-label.Text = text
-label.TextColor3 = Color3.fromRGB(220, 220, 220)
-label.TextSize = 14
-label.Parent = parentPage
+    local label = Instance.new("TextLabel")
+    label.Name = "InfoLabel"
+    label.Size = UDim2.new(1, -10, 0, 25)
+    label.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
+    label.Font = Enum.Font.Gotham
+    label.Text = text
+    label.TextColor3 = Color3.fromRGB(220, 220, 220)
+    label.TextSize = 14
+    label.Parent = parentPage
 
-local corner = Instance.new("UICorner", label)  
-corner.CornerRadius = UDim.new(0, 6)  
-  
-updateCanvasSize(parentPage)  
-return label
+    local corner = Instance.new("UICorner", label)
+    corner.CornerRadius = UDim.new(0, 6)
 
+    updateCanvasSize(parentPage)
+    return label
 end
 
 local function createToggle(parentPage, labelText, callback)
-local enabled = false
+    local enabled = false
 
-local button = Instance.new("TextButton")  
-button.Name = labelText  
-button.Size = UDim2.new(1, -10, 0, 35)  
-button.BackgroundColor3 = Color3.fromRGB(45, 45, 55)  
-button.Font = Enum.Font.Gotham  
-button.Text = ""  
-button.Parent = parentPage  
-  
-local corner = Instance.new("UICorner", button)  
-corner.CornerRadius = UDim.new(0, 6)  
+    local button = Instance.new("TextButton")
+    button.Name = labelText
+    button.Size = UDim2.new(1, -10, 0, 35)
+    button.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
+    button.Font = Enum.Font.Gotham
+    button.Text = ""
+    button.Parent = parentPage
 
-local label = Instance.new("TextLabel", button)  
-label.Size = UDim2.new(0.7, 0, 1, 0)  
-label.Position = UDim2.new(0, 10, 0, 0)  
-label.BackgroundTransparency = 1  
-label.Font = Enum.Font.Gotham  
-label.Text = labelText  
-label.TextColor3 = Color3.fromRGB(220, 220, 220)  
-label.TextSize = 14  
-label.TextXAlignment = Enum.TextXAlignment.Left  
+    local corner = Instance.new("UICorner", button)
+    corner.CornerRadius = UDim.new(0, 6)
 
-local status = Instance.new("TextLabel", button)  
-status.Size = UDim2.new(0.25, 0, 1, 0)  
-status.Position = UDim2.new(0.75, -10, 0, 0)  
-status.BackgroundTransparency = 1  
-status.Font = Enum.Font.GothamBold  
-status.Text = "OFF"  
-status.TextColor3 = Color3.fromRGB(255, 80, 80)  
-status.TextSize = 14  
-status.TextXAlignment = Enum.TextXAlignment.Right  
-  
-button.MouseButton1Click:Connect(function()  
-    enabled = not enabled  
-    status.Text = enabled and "ON" or "OFF"  
-    status.TextColor3 = enabled and Color3.fromRGB(80, 255, 80) or Color3.fromRGB(255, 80, 80)  
-    pcall(callback, enabled)  
-end)  
-  
-updateCanvasSize(parentPage)
+    local label = Instance.new("TextLabel", button)
+    label.Size = UDim2.new(0.7, 0, 1, 0)
+    label.Position = UDim2.new(0, 10, 0, 0)
+    label.BackgroundTransparency = 1
+    label.Font = Enum.Font.Gotham
+    label.Text = labelText
+    label.TextColor3 = Color3.fromRGB(220, 220, 220)
+    label.TextSize = 14
+    label.TextXAlignment = Enum.TextXAlignment.Left
 
+    local status = Instance.new("TextLabel", button)
+    status.Size = UDim2.new(0.25, 0, 1, 0)
+    status.Position = UDim2.new(0.75, -10, 0, 0)
+    status.BackgroundTransparency = 1
+    status.Font = Enum.Font.GothamBold
+    status.Text = "OFF"
+    status.TextColor3 = Color3.fromRGB(255, 80, 80)
+    status.TextSize = 14
+    status.TextXAlignment = Enum.TextXAlignment.Right
+
+    button.MouseButton1Click:Connect(function()
+        enabled = not enabled
+        status.Text = enabled and "ON" or "OFF"
+        status.TextColor3 = enabled and Color3.fromRGB(80, 255, 80) or Color3.fromRGB(255, 80, 80)
+        pcall(callback, enabled)
+    end)
+
+    updateCanvasSize(parentPage)
 end
 
 local function createButton(parentPage, labelText, callback)
-local button = Instance.new("TextButton")
-button.Name = labelText
-button.Size = UDim2.new(1, -10, 0, 35)
-button.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
-button.Font = Enum.Font.Gotham
-button.Text = labelText
-button.TextColor3 = Color3.fromRGB(220, 220, 220)
-button.TextSize = 14
-button.Parent = parentPage
+    local button = Instance.new("TextButton")
+    button.Name = labelText
+    button.Size = UDim2.new(1, -10, 0, 35)
+    button.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
+    button.Font = Enum.Font.Gotham
+    button.Text = labelText
+    button.TextColor3 = Color3.fromRGB(220, 220, 220)
+    button.TextSize = 14
+    button.Parent = parentPage
 
-local corner = Instance.new("UICorner", button)  
-corner.CornerRadius = UDim.new(0, 6)  
-  
-button.MouseButton1Click:Connect(function()  
-	pcall(callback, button)  
-end)  
-  
-updateCanvasSize(parentPage)  
-return button
+    local corner = Instance.new("UICorner", button)
+    corner.CornerRadius = UDim.new(0, 6)
 
+    button.MouseButton1Click:Connect(function()
+        pcall(callback, button)
+    end)
+
+    updateCanvasSize(parentPage)
+    return button
 end
 
 --// Player Feature Variables
 local noclipConnection, infJumpConnection, flyConnection = nil, nil, nil
 local flyBodyVelocity, flyBodyGyro = nil, nil
 local originalGravity = workspace.Gravity
+local autoBuySeedsEnabled = false
+local autoBuyGearEnabled = false
 
 --// Populate Pages with Features
 
@@ -313,57 +310,57 @@ speedButton.Size, speedButton.BackgroundColor3, speedButton.Font, speedButton.Te
 local speedButtonCorner = Instance.new("UICorner", speedButton)
 speedButtonCorner.CornerRadius = UDim.new(0, 6)
 speedButton.MouseButton1Click:Connect(function()
-local speed = tonumber(speedInput.Text)
-if speed and LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
-LocalPlayer.Character.Humanoid.WalkSpeed = speed
-end
+    local speed = tonumber(speedInput.Text)
+    if speed and LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+        LocalPlayer.Character.Humanoid.WalkSpeed = speed
+    end
 end)
 updateCanvasSize(homePage)
 
 createToggle(homePage, "Terbang (Fly)", function(enabled)
-local humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-local rootPart = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-if not humanoid or not rootPart then return end
-if enabled then
-flyBodyGyro = Instance.new("BodyGyro", rootPart)
-flyBodyGyro.MaxTorque, flyBodyGyro.CFrame = Vector3.new(9e9, 9e9, 9e9), rootPart.CFrame
-flyBodyVelocity = Instance.new("BodyVelocity", rootPart)
-flyBodyVelocity.MaxForce, flyBodyVelocity.Velocity = Vector3.new(9e9, 9e9, 9e9), Vector3.new(0, 0, 0)
-flyConnection = RunService.RenderStepped:Connect(function()
-local speed, velocity = 50, Vector3.new(0,0,0)
-if UserInputService:IsKeyDown(Enum.KeyCode.W) then velocity += (rootPart.CFrame.LookVector * speed) end
-if UserInputService:IsKeyDown(Enum.KeyCode.S) then velocity -= (rootPart.CFrame.LookVector * speed) end
-if UserInputService:IsKeyDown(Enum.KeyCode.D) then velocity += (rootPart.CFrame.RightVector * speed) end
-if UserInputService:IsKeyDown(Enum.KeyCode.A) then velocity -= (rootPart.CFrame.RightVector * speed) end
-if UserInputService:IsKeyDown(Enum.KeyCode.Space) then velocity += Vector3.new(0, speed, 0) end
-if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then velocity -= Vector3.new(0, speed, 0) end
-flyBodyGyro.CFrame = rootPart.CFrame
-flyBodyVelocity.Velocity = velocity
-end)
-else
-if flyConnection then flyConnection:Disconnect() end
-if flyBodyGyro then flyBodyGyro:Destroy() end
-if flyBodyVelocity then flyBodyVelocity:Destroy() end
-flyConnection, flyBodyGyro, flyBodyVelocity = nil, nil, nil
-end
+    local humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    local rootPart = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    if not humanoid or not rootPart then return end
+    if enabled then
+        flyBodyGyro = Instance.new("BodyGyro", rootPart)
+        flyBodyGyro.MaxTorque, flyBodyGyro.CFrame = Vector3.new(9e9, 9e9, 9e9), rootPart.CFrame
+        flyBodyVelocity = Instance.new("BodyVelocity", rootPart)
+        flyBodyVelocity.MaxForce, flyBodyVelocity.Velocity = Vector3.new(9e9, 9e9, 9e9), Vector3.new(0, 0, 0)
+        flyConnection = RunService.RenderStepped:Connect(function()
+            local speed, velocity = 50, Vector3.new(0,0,0)
+            if UserInputService:IsKeyDown(Enum.KeyCode.W) then velocity += (rootPart.CFrame.LookVector * speed) end
+            if UserInputService:IsKeyDown(Enum.KeyCode.S) then velocity -= (rootPart.CFrame.LookVector * speed) end
+            if UserInputService:IsKeyDown(Enum.KeyCode.D) then velocity += (rootPart.CFrame.RightVector * speed) end
+            if UserInputService:IsKeyDown(Enum.KeyCode.A) then velocity -= (rootPart.CFrame.RightVector * speed) end
+            if UserInputService:IsKeyDown(Enum.KeyCode.Space) then velocity += Vector3.new(0, speed, 0) end
+            if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then velocity -= Vector3.new(0, speed, 0) end
+            flyBodyGyro.CFrame = rootPart.CFrame
+            flyBodyVelocity.Velocity = velocity
+        end)
+    else
+        if flyConnection then flyConnection:Disconnect() end
+        if flyBodyGyro then flyBodyGyro:Destroy() end
+        if flyBodyVelocity then flyBodyVelocity:Destroy() end
+        flyConnection, flyBodyGyro, flyBodyVelocity = nil, nil, nil
+    end
 end)
 
 createToggle(homePage, "Noclip", function(enabled)
-if enabled then
-noclipConnection = RunService.Stepped:Connect(function() if LocalPlayer.Character then for _, part in ipairs(LocalPlayer.Character:GetDescendants()) do if part:IsA("BasePart") then part.CanCollide = false end end end end)
-else
-if noclipConnection then noclipConnection:Disconnect(); noclipConnection = nil end
-end
+    if enabled then
+        noclipConnection = RunService.Stepped:Connect(function() if LocalPlayer.Character then for _, part in ipairs(LocalPlayer.Character:GetDescendants()) do if part:IsA("BasePart") then part.CanCollide = false end end end end)
+    else
+        if noclipConnection then noclipConnection:Disconnect(); noclipConnection = nil end
+    end
 end)
 
 createToggle(homePage, "Lompat Tanpa Batas", function(enabled)
-local humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-if not humanoid then return end
-if enabled then
-infJumpConnection = UserInputService.JumpRequest:Connect(function() humanoid:ChangeState(Enum.HumanoidStateType.Jumping) end)
-else
-if infJumpConnection then infJumpConnection:Disconnect(); infJumpConnection = nil end
-end
+    local humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    if not humanoid then return end
+    if enabled then
+        infJumpConnection = UserInputService.JumpRequest:Connect(function() humanoid:ChangeState(Enum.HumanoidStateType.Jumping) end)
+    else
+        if infJumpConnection then infJumpConnection:Disconnect(); infJumpConnection = nil end
+    end
 end)
 
 createToggle(homePage, "Anti Gravitasi", function(enabled) workspace.Gravity = enabled and 0 or originalGravity end)
@@ -376,24 +373,42 @@ createToggle(mainPage, "Claim Dino Quest", function() GameEvents.ClaimDinoQuest:
 createButton(mainPage, "❤️ Like Semua Garden", function(b) local f=GameEvents.LikeGarden for _,p in ipairs(Players:GetPlayers()) do if p~=LocalPlayer then pcall(f.InvokeServer,f,p) task.wait() end end b.Text="✅ Sudah Like Semua!"; task.wait(2); b.Text="❤️ Like Semua Garden" end)
 
 --## OTOMATIS PAGE ##--
-createToggle(autoPage, "Auto Buy All Seeds", function()
-	for _, s in ipairs(seedList) do
-		GameEvents.BuySeedStock:FireServer(s, 9999)
-		task.wait(0.1)
-	end
+createToggle(autoPage, "Auto Buy All Seeds", function(enabled)
+    autoBuySeedsEnabled = enabled
+    if not enabled then return end
+
+    task.spawn(function()
+        while autoBuySeedsEnabled do
+            for _, s in ipairs(seedList) do
+                if not autoBuySeedsEnabled then break end -- Hentikan jika toggle dinonaktifkan
+                GameEvents.BuySeedStock:FireServer(s, 0.1)
+                task.wait(0.1)
+            end
+            task.wait() -- Jeda singkat sebelum mengulang seluruh daftar
+        end
+    end)
 end)
 
-createToggle(autoPage, "Auto Buy All Gear", function()
-	for _, g in ipairs(gearList) do
-		GameEvents.BuyGearStock:FireServer(g, 9999)
-		task.wait(0.1)
-	end
+createToggle(autoPage, "Auto Buy All Gear", function(enabled)
+    autoBuyGearEnabled = enabled
+    if not enabled then return end
+
+    task.spawn(function()
+        while autoBuyGearEnabled do
+            for _, g in ipairs(gearList) do
+                if not autoBuyGearEnabled then break end -- Hentikan jika toggle dinonaktifkan
+                GameEvents.BuyGearStock:FireServer(g, 0.1)
+                task.wait(0.1)
+            end
+            task.wait() -- Jeda singkat sebelum mengulang seluruh daftar
+        end
+    end)
 end)
 
 createToggle(autoPage, "Auto Claim Fossil", function()
-	pcall(function()
-		fireproximityprompt(workspace.Interaction.UpdateItems.DinoEvent.DNAmachine.SideTable:GetChildren()[4].ProxPromptPart.FossilClaimProximityPrompt)
-	end)
+    pcall(function()
+        fireproximityprompt(workspace.Interaction.UpdateItems.DinoEvent.DNAmachine.SideTable:GetChildren()[4].ProxPromptPart.FossilClaimProximityPrompt)
+    end)
 end)
 
 --## MISC PAGE ##--
@@ -415,8 +430,8 @@ likeButton.Name, likeButton.Size, likeButton.Position, likeButton.BackgroundColo
 local likeButtonCorner = Instance.new("UICorner", likeButton)
 likeButtonCorner.CornerRadius = UDim.new(0, 6)
 likeButton.MouseButton1Click:Connect(function()
-if tonumber(likeTextBox.Text) == nil then return end
-pcall(function() workspace.Farm.Farm.Sign.Core_Part.SurfaceGui.Player.Likes.Text = (workspace.Farm.Farm.Sign.Core_Part.SurfaceGui.Player.Likes.Text:match("^([^%d%s]+)") or "👍") .. " " .. likeTextBox.Text end)
+    if tonumber(likeTextBox.Text) == nil then return end
+    pcall(function() workspace.Farm.Farm.Sign.Core_Part.SurfaceGui.Player.Likes.Text = (workspace.Farm.Farm.Sign.Core_Part.SurfaceGui.Player.Likes.Text:match("^([^%d%s]+)") or "👍") .. " " .. likeTextBox.Text end)
 end)
 updateCanvasSize(miscPage)
 
@@ -438,7 +453,7 @@ local ToggleHubButton = Instance.new("TextButton")
 ToggleHubButton.Name = "ToggleHubButton"
 ToggleHubButton.Size = UDim2.new(0, 40, 0, 40)
 ToggleHubButton.Position = UDim2.new(0, 10, 0.5, -20)
-ToggleHubButton.Text = "💫" -- [DIPERBAIKI] Emoji logo dikembalikan
+ToggleHubButton.Text = "💫"
 ToggleHubButton.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
 ToggleHubButton.TextColor3 = Color3.new(1, 1, 1)
 ToggleHubButton.Font = Enum.Font.GothamBold
@@ -449,5 +464,3 @@ ToggleHubButton.Parent = ScreenGui
 local ToggleHubButtonCorner = Instance.new("UICorner", ToggleHubButton)
 ToggleHubButtonCorner.CornerRadius = UDim.new(0, 8)
 ToggleHubButton.MouseButton1Click:Connect(function() MainFrame.Visible = not MainFrame.Visible end)
-
-

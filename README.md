@@ -378,14 +378,14 @@ createButton(mainPage, "❤️ Like Semua Garden", function(b) local f=GameEvent
 --## OTOMATIS PAGE ##--
 createToggle(autoPage, "Auto Buy All Seeds", function()
 	for _, s in ipairs(seedList) do
-		GameEvents.BuySeedStock:FireServer(s, 0.1)
+		GameEvents.BuySeedStock:FireServer(s, 9999)
 		task.wait(0.1)
 	end
 end)
 
 createToggle(autoPage, "Auto Buy All Gear", function()
 	for _, g in ipairs(gearList) do
-		GameEvents.BuyGearStock:FireServer(g, 0.1)
+		GameEvents.BuyGearStock:FireServer(g, 9999)
 		task.wait(0.1)
 	end
 end)

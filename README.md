@@ -376,9 +376,25 @@ createToggle(mainPage, "Claim Dino Quest", function() GameEvents.ClaimDinoQuest:
 createButton(mainPage, "❤️ Like Semua Garden", function(b) local f=GameEvents.LikeGarden for _,p in ipairs(Players:GetPlayers()) do if p~=LocalPlayer then pcall(f.InvokeServer,f,p) task.wait() end end b.Text="✅ Sudah Like Semua!"; task.wait(2); b.Text="❤️ Like Semua Garden" end)
 
 --## OTOMATIS PAGE ##--
-createToggle(autoPage, "Auto Buy All Seeds", function() for _,s in ipairs(seedList) do GameEvents.BuySeedStock:FireServer(s, 1) end end)
-createToggle(autoPage, "Auto Buy All Gear", function() for _,g in ipairs(gearList) do GameEvents.BuyGearStock:FireServer(g, 1) end end)
-createToggle(autoPage, "Auto Claim Fossil", function() pcall(function() fireproximityprompt(workspace.Interaction.UpdateItems.DinoEvent.DNAmachine.SideTable:GetChildren()[4].ProxPromptPart.FossilClaimProximityPrompt) end) end)
+createToggle(autoPage, "Auto Buy All Seeds", function()
+	for _, s in ipairs(seedList) do
+		GameEvents.BuySeedStock:FireServer(s, 0.1)
+		task.wait(0.1)
+	end
+end)
+
+createToggle(autoPage, "Auto Buy All Gear", function()
+	for _, g in ipairs(gearList) do
+		GameEvents.BuyGearStock:FireServer(g, 0.1)
+		task.wait(0.1)
+	end
+end)
+
+createToggle(autoPage, "Auto Claim Fossil", function()
+	pcall(function()
+		fireproximityprompt(workspace.Interaction.UpdateItems.DinoEvent.DNAmachine.SideTable:GetChildren()[4].ProxPromptPart.FossilClaimProximityPrompt)
+	end)
+end)
 
 --## MISC PAGE ##--
 createButton(miscPage, "Meteor Shower", function() GameEvents.MeteorShower:FireServer() end)

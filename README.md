@@ -381,8 +381,8 @@ createToggle(autoPage, "Auto Buy All Seeds", function(enabled)
         while autoBuySeedsEnabled do
             for _, s in ipairs(seedList) do
                 if not autoBuySeedsEnabled then break end -- Hentikan jika toggle dinonaktifkan
-                GameEvents.BuySeedStock:FireServer(s, 0.1)
-                task.wait(0.1)
+                GameEvents.BuySeedStock:FireServer(s, 1)
+                task.wait(0.01)
             end
             task.wait() -- Jeda singkat sebelum mengulang seluruh daftar
         end
@@ -397,8 +397,8 @@ createToggle(autoPage, "Auto Buy All Gear", function(enabled)
         while autoBuyGearEnabled do
             for _, g in ipairs(gearList) do
                 if not autoBuyGearEnabled then break end -- Hentikan jika toggle dinonaktifkan
-                GameEvents.BuyGearStock:FireServer(g, 0.1)
-                task.wait(0.1)
+                GameEvents.BuyGearStock:FireServer(g, 1)
+                task.wait(0.01)
             end
             task.wait() -- Jeda singkat sebelum mengulang seluruh daftar
         end

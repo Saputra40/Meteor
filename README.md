@@ -1,7 +1,7 @@
 --[[
 💫METEOR_HUB🌟
 Version 7: Continuous Buy Feature
-Dibuat oleh: rip_kompos
+Dibuat oleh: PEPEK
 Modifikasi oleh: Gemini
 ]]
 
@@ -22,15 +22,14 @@ local GameEvents = ReplicatedStorage:WaitForChild("GameEvents")
 --// Configuration
 local seedList = {
 "Apple", "Carrot", "Strawberry", "Blueberry", "Watermelon", "Coconut", "Mushroom", "Mango", "Cocoa", "Tomato",
-"Sugar Apple", "Ember Lily", "Orange Tulip", "Daffodil", "Burning Bud", "Bamboo", "Beanstalk", "Grape", "Cactus", "Pumpkin", "Dragon Fruit"
+"Sugar Apple", "Ember Lily", "Orange Tulip", "Daffodil", "Burning Bud", "Bamboo", "Beanstalk", "Grape", "Cactus", "Pumpkin", "Dragon Fruit", "burning bud", "Giant pinecone"
 }
 
 local gearList = {
 "Master Sprinkler", "Harvest Tool", "Favorite Tool", "Watering Can",
 "Advanced Sprinkler", "Basic Sprinkler", "Tanning Mirror", "Lightning Rod",
-"Cleaning Spray", "Trowel", "Recall Wrench", "Magnifying Glass", "godly sprinkler"
+"Cleaning Spray", "Trowel", "Recall Wrench", "Magnifying Glass", "godly sprinkler", "medium toy", "medium treat",      "levelup lolipop" 
 }
-
 local collectSeeds = {"Tomato Fruit", "Strawberry Fruit", "blueberry Fruit"}
 
 --// Main UI Creation
